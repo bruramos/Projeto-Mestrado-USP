@@ -1,0 +1,65 @@
+// VerilogA for FinFET_N, FinFET_N, veriloga
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+module FinFET_N (d, s, fg, bg);
+inout d, s, fg, bg;
+electrical d, s, fg, bg;
+
+parameter real w = 20, rad = 0, n = 5; 
+// w assume 20, 120 ou 870 
+// rad = 0(sem radiacao) e rad = 1(com radiacao)
+// n = 5 numero inicial de Nfins
+real ID, gm, gd, gm_Id, Av;
+
+analog begin
+	if (rad == 0) begin
+		
+		if (w == 20) begin
+		ID = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_srad_w20.tbl", "1CC,1CC;1");
+		gm = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_srad_w20.tbl", "1CC,1CC;2");
+		gd = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_srad_w20.tbl", "1CC,1CC;3");
+		end
+
+		else if (w == 120) begin
+		ID = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_srad_w120.tbl", "1CC,1CC;1");
+		gm = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_srad_w120.tbl", "1CC,1CC;2");
+		gd = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_srad_w120.tbl", "1CC,1CC;3");
+		end
+
+		else if (w == 870) begin
+		ID = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_srad_w870.tbl", "1CC,1CC;1");
+		gm = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_srad_w870.tbl", "1CC,1CC;2");
+		gd = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_srad_w870.tbl", "1CC,1CC;3");
+		end
+	end
+	
+	else if (rad == 1) begin
+		
+		if (w == 20) begin
+		ID = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_rad_w20.tbl", "1CC,1CC;1");
+		gm = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_rad_w20.tbl", "1CC,1CC;2");
+		gd = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_rad_w20.tbl", "1CC,1CC;3");
+		end
+		
+		else if (w == 120) begin
+		ID = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_rad_w120.tbl", "1CC,1CC;1");
+		gm = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_rad_w120.tbl", "1CC,1CC;2");
+		gd = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_rad_w120.tbl", "1CC,1CC;3");
+		end
+		
+		else if (w == 870) begin
+		ID = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_rad_w870.tbl", "1CC,1CC;1");
+		gm = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_rad_w870.tbl", "1CC,1CC;2");
+		gd = (n/5) * $table_model (V(fg, s), V(d, s), "n_vd_vg_rad_w870.tbl", "1CC,1CC;3");
+		end
+	end
+
+I(d, s) <+ ID; 
+gm_Id = gm/ID; // Calculo da eficiencia do transistor
+Av = gm/gd; // Calculo do ganho intrinseco
+
+end
+
+endmodule
