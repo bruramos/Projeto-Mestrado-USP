@@ -8,7 +8,7 @@ Resolução do exercício de desafio proposto em linguagem Python.
 
   [[item, quantidade de cada item, valor unitário], ..., [item, quantidade de cada item, valor unitário]]
   
-  **Obs.: respeitar esta formatação, caso contrário o resultado não será conforme o esperado.
+  **Obs.: respeitar esta formatação, caso contrário o resultado não será conforme o esperado.**
   
 - Lista de E-mails
 
